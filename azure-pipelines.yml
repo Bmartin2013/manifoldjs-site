@@ -4,20 +4,16 @@ pool:
   vmImage: 'Ubuntu 16.04'
   
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '8.x'
-  
-- task: Npm@1
-  displayName: 'npm install'
-  inputs:
-    command: install
+- task: Dockerize@0
+  script: docker build -t $(dockerId)/$(imageName)
 
-- task: Npm@1
-  displayName: 'npm test'
-  inputs:
-    command: custom
-    customCommand: 'test'
+- task: LoginToAzure@2
+  script: docker login -u $(dockerId) -p $(dockerPassword) manifoldsite.azurecr.io
+
+  - task: PushToCR@2
+    script: |
+    docker login -u $(dockerId).azurecr.io -p $(pswd) $(dockerid).azurecr.io
+    docker push $(dockerId).azurecr.io/$(imageName)
 
 - task: PublishTestResults@2
   inputs:
