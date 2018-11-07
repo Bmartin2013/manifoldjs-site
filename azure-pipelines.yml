@@ -12,7 +12,7 @@ steps:
 
   - task: PushToCR@2
     script: |
-    docker login -u $(dockerId).azurecr.io -p $(pswd) $(dockerid).azurecr.io
+    docker login -u $(dockerId).azurecr.io -p $(dockerPassword) $(dockerid).azurecr.io
     docker push $(dockerId).azurecr.io/$(imageName)
 
 - task: PublishTestResults@2
