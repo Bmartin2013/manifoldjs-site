@@ -9,7 +9,7 @@ variables:
 
 steps:
 - script: |
-    docker build -t pepe
+    docker build -t $(dockerId).azurecr.io/$(imageName) .
     docker images
     # docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
     # docker push $(dockerId).azurecr.io/$(imageName)
