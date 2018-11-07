@@ -7,10 +7,11 @@ steps:
 - task: Dockerize@0
   script: docker build -t $(dockerId)/$(imageName) .
 
-  - task: PushToCR@2
-    script: |
-    docker login -u $(dockerId).azurecr.io -p $(dockerPassword) $(dockerid).azurecr.io
-    docker push $(dockerId).azurecr.io/$(imageName)
+- task: LoginToCR@1
+  script: docker login -u $(dockerId).azurecr.io -p $(dockerPassword) $(dockerid).azurecr.io
+
+- task: PushToCR@2
+  script: docker push $(dockerId).azurecr.io/$(imageName)
 
 - task: PublishTestResults@2
   inputs:
