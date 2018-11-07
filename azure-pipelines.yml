@@ -5,10 +5,7 @@ pool:
   
 steps:
 - task: Dockerize@0
-  script: docker build -t $(dockerId)/$(imageName)
-
-- task: LoginToAzure@2
-  script: docker login -u $(dockerId) -p $(dockerPassword) manifoldsite.azurecr.io
+  script: docker build -t $(dockerId)/$(imageName) .
 
   - task: PushToCR@2
     script: |
