@@ -10,9 +10,13 @@ variables:
 steps:
 - script: |
     docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
-    docker images -q 
-    # docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-    # docker push $(dockerId).azurecr.io/$(imageName)
+    #docker images -q 
+    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+    docker push $(dockerId).azurecr.io/$imageName
+
+env:
+  imageName: docker images -q 
+
 
 
 - task: PublishTestResults@2
