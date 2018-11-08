@@ -13,9 +13,9 @@ steps:
    # Write your commands here
    # Use the environment variables input below to pass secret variables to this script
    docker build -t manifoldsite . # include other options to meet your needs
-   docker tag $(dockerId).azurecr.io/manifoldsite:$(Build.SourceVersion) 
+   docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-   docker push $(dockerId).azurecr.io/$(Build.SourceVersion) 
+   docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
 
 # steps:
 # - script: |
