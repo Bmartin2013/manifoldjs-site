@@ -5,13 +5,12 @@ pool:
   
 variables:
   buildConfiguration: 'Release'
-  imageName: docker build -t 'pepe' .
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
 steps:
 - script: |
-    
-    docker images
+    docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
+    docker images -q 
     # docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
     # docker push $(dockerId).azurecr.io/$(imageName)
 
