@@ -8,6 +8,7 @@ variables:
   imageName: Build.SourceVersion
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
+steps:
 - task: Docker@1
    displayName: 'Build, tag and push image'
 - bash: |
