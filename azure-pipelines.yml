@@ -9,11 +9,11 @@ variables:
 
 steps:
 - script: |
-    $imageName = docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
-    #docker images node:8
+    docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
+    docker images node:8
     docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
 
-    docker push $(dockerId).azurecr.io/$imageName
+    #docker push $(dockerId).azurecr.io/$imageName
 
 
 
