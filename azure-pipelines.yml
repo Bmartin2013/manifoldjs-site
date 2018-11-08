@@ -12,9 +12,9 @@ steps:
 - bash: |
    # Write your commands here
    # Use the environment variables input below to pass secret variables to this script
-   docker build -t $(dockerId).azurecr.io/repositoryname:$(Build.SourceVersion) . # include other options to meet your needs
+   docker build -t $(dockerId).azurecr.io/$(Build.SourceVersion) . # include other options to meet your needs
    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-   docker push $(dockerId).azurecr.io/repositoryname:$(Build.SourceVersion) 
+   docker push $(dockerId).azurecr.io/$(Build.SourceVersion) 
 
 # steps:
 # - script: |
