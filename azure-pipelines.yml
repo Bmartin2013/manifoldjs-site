@@ -5,7 +5,7 @@ pool:
   
 variables:
   buildConfiguration: 'Release'
-  imageName: '(Build.SourceVersion)'
+  imageName: (Build.SourceVersion)
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
 steps:
