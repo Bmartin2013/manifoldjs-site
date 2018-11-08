@@ -8,16 +8,12 @@ variables:
   imageName: Build.SourceVersion
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
-- task: Docker@1
-  displayName: Build
+steps:
 - bash: |
    # Write your commands here
    # Use the environment variables input below to pass secret variables to this script
    docker build -t manifoldsite . # include other options to meet your needs
    docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-
-- task: Docker@1
-  displayName: Push
 - bash: |
    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
    docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
@@ -27,6 +23,9 @@ variables:
 #     docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
 #     docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
 #     #docker push $(dockerId).azurecr.io/$(imageName)
+
+
+
 
 - task: PublishTestResults@2
   inputs:
