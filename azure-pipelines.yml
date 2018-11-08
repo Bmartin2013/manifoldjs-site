@@ -5,14 +5,14 @@ pool:
   
 variables:
   buildConfiguration: 'Release'
+  imageName: '(Build.SourceVersion)'
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
 steps:
 - script: |
     docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
-    docker images node:8
     docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-
+    Write-Output $imageName
     #docker push $(dockerId).azurecr.io/$imageName
 
 
