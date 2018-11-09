@@ -8,13 +8,16 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker build -t manifoldsite . 
-  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+    name: build
+  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+    name: retag 
 
 - job: Login
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+    name: Login
   dependsOn: Build
   condition: succeeded()
 
@@ -23,6 +26,7 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+    name: push
   dependsOn: Login 
   condition: succeeded()
 
