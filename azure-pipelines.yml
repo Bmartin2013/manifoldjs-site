@@ -1,23 +1,19 @@
-# Build NodeJS Express app using Azure Pipelines
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript?view=vsts
-
-
 jobs:
 - job: Build
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker build -t manifoldsite . 
-    name: build
-  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
-    name: retag 
+    name: Build docker image with a default name
+  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(imageName)
+    name: Retag docker image 
 
-- job: Login
+- job: Authenticate
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-    name: Login
+    name: Authenticate ACR
   dependsOn: Build
   condition: succeeded()
 
@@ -25,8 +21,8 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
-    name: push
+  - bash: docker push $(dockerId).azurecr.io/latest:$(imageName)
+    name: Push built docker image into ACR
   dependsOn: Login 
   condition: succeeded()
 
