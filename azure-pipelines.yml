@@ -10,9 +10,9 @@ jobs:
     buildConfiguration: 'Release'
     imageName: Build.SourceVersion
   steps:
-   - bash: docker build -t manifoldsite . 
-   - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-    displayName: 'Build docker image'
+  - bash: docker build -t manifoldsite . 
+  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+  #displayName: 'Build docker image'
 
 - job: Push
   pool:
