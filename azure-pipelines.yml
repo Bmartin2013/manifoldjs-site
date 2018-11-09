@@ -9,11 +9,11 @@ jobs:
   variables:
     buildConfiguration: 'Release'
     imageName: Build.SourceVersion
-  steps:
- - bash: |
-   docker build -t manifoldsite . 
-   docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-   displayName: 'Build docker image'
+  #steps:
+  # - bash: |
+  #   docker build -t manifoldsite . 
+  #   docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+  #   displayName: 'Build docker image'
 
 - job: Push
   pool:
@@ -21,11 +21,11 @@ jobs:
   variables:
     buildConfiguration: 'Release'
     imageName: Build.SourceVersion
-  steps:
- - bash: |
-   docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-   docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-  displayName: 'Push built docker image to container registry'
+  #steps:
+#  - bash: |
+#    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+#    docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+#   displayName: 'Push built docker image to container registry'
   dependsOn: Build
   condition: succeeded()
 
