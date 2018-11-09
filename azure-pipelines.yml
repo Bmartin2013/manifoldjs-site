@@ -5,7 +5,7 @@ jobs:
   steps:
   - bash: docker build -t manifoldsite . 
     name: Build_docker_image
-  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(imageName)
+  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
     name: Retag_docker_image 
 
 - job: Authenticate
@@ -21,7 +21,7 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - bash: docker push $(dockerId).azurecr.io/latest:$(imageName)
+  - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
     name: Push_built_docker_image
   dependsOn: Authenticate 
   condition: succeeded()
