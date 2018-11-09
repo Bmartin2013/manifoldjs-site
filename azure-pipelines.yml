@@ -3,29 +3,27 @@
 
 
 jobs:
-- job: Build
   pool:
     vmImage: 'Ubuntu 16.04'
-  variables:
+    variables:
     buildConfiguration: 'Release'
     imageName: Build.SourceVersion
+
+- job: Build
   steps:
   - bash: docker build -t manifoldsite . 
   - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-  #displayName: 'Build docker image'
+
+- job: Login
+  steps:
+  - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+  dependsOn: Build
+  condition: succeeded()
 
 - job: Push
-  pool:
-    vmImage: 'Ubuntu 16.04'
-  variables:
-    buildConfiguration: 'Release'
-    imageName: Build.SourceVersion
-  #steps:
-#  - bash: |
-#    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-#    docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-#   displayName: 'Push built docker image to container registry'
-  dependsOn: Build
+  steps:
+  - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+  dependsOn: Login 
   condition: succeeded()
 
 # steps:
