@@ -5,7 +5,7 @@ jobs:
   steps:
   - bash: docker build -t manifoldsite . 
     name: Build_docker_image
-  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+  - bash: docker tag manifoldsite:latest $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
     name: Retag_docker_image 
 
 - job: Authenticate
