@@ -1,22 +1,26 @@
 # Build NodeJS Express app using Azure Pipelines
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript?view=vsts
-pool:
-  vmImage: 'Ubuntu 16.04'
-  
-variables:
-  buildConfiguration: 'Release'
-  imageName: Build.SourceVersion
+
 
 jobs:
 - job: Build
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  variables:
+    buildConfiguration: 'Release'
+    imageName: Build.SourceVersion
   steps:
  - bash: |
    docker build -t manifoldsite . 
    docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
    displayName: 'Build docker image'
 
-jobs:
 - job: Push
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  variables:
+    buildConfiguration: 'Release'
+    imageName: Build.SourceVersion
   steps:
  - bash: |
    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
