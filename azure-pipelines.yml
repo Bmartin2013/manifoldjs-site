@@ -23,7 +23,7 @@ jobs:
   steps:
   - bash: docker push $(dockerId).azurecr.io/latest:$(imageName)
     name: Push_built_docker_image
-  dependsOn: Login 
+  dependsOn: Authenticate 
   condition: succeeded()
 
 # steps:
