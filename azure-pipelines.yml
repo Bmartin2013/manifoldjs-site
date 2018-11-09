@@ -4,16 +4,16 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker build -t manifoldsite . 
-    name: Build docker image with a default name
+    name: Build_docker_image
   - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(imageName)
-    name: Retag docker image 
+    name: Retag_docker_image 
 
 - job: Authenticate
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-    name: Authenticate ACR
+    name: Authenticate_ACR
   dependsOn: Build
   condition: succeeded()
 
@@ -22,7 +22,7 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   steps:
   - bash: docker push $(dockerId).azurecr.io/latest:$(imageName)
-    name: Push built docker image into ACR
+    name: Push_built_docker_image
   dependsOn: Login 
   condition: succeeded()
 
