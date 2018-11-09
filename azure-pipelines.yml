@@ -6,32 +6,36 @@ pool:
 variables:
   buildConfiguration: 'Release'
   imageName: Build.SourceVersion
-  # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
-steps:
+jobs:
+- job: Build
+  steps:
+ - bash: |
+   docker build -t manifoldsite . 
+   docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+   displayName: 'Build docker image'
+
+jobs:
+- job: Push
+  steps:
+ - bash: |
+   docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+   docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+  displayName: 'Push built docker image to container registry'
+  dependsOn: Build
+  condition: succeeded()
+
+# steps:
 # - bash: |
 #    # Write your commands here
 #    # Use the environment variables input below to pass secret variables to this script
-#    docker build -t manifoldsite . 
-#    docker tag manifoldsite $(dockerId).azurecr.io/manifoldsite:$(Build.SourceVersion) 
+#    docker build -t manifoldsite . # include other options to meet your needs
+#    docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
 # - bash: |
 #    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-#    docker push $(dockerId).azurecr.io/manifoldsite:$(Build.SourceVersion) 
-- bash: |
-   docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-   docker pull $(dockerId).azurecr.io/latest:e487f896b6b8fe9e744ec9ea468c7c853b3145e2 #manifoldsite:$(Build.SourceVersion) 
-   docker run $(dockerId).azurecr.io/latest:e487f896b6b8fe9e744ec9ea468c7c853b3145e2 #manifoldsite:$(Build.SourceVersion) 
+#    docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
 
-# steps:
-# - script: |
-#     docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
-#     docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-#     #docker push $(dockerId).azurecr.io/$(imageName)
-
-
-
-
-- task: PublishTestResults@2
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+# - task: PublishTestResults@2
+#   inputs:
+#     testRunner: VSTest
+#     testResultsFiles: '**/*.trx'
