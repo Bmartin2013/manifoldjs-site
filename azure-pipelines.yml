@@ -18,6 +18,7 @@ steps:
 #    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
 #    docker push $(dockerId).azurecr.io/manifoldsite:$(Build.SourceVersion) 
 - bash: |
+   docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
    docker pull $(dockerId).azurecr.io/latest:e487f896b6b8fe9e744ec9ea468c7c853b3145e2 #manifoldsite:$(Build.SourceVersion) 
    docker run $(dockerId).azurecr.io/latest:e487f896b6b8fe9e744ec9ea468c7c853b3145e2 #manifoldsite:$(Build.SourceVersion) 
 
