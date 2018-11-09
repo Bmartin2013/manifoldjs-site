@@ -11,7 +11,9 @@ jobs:
     imageName: Build.SourceVersion
   steps:
   - bash: docker build -t manifoldsite . 
+  displayName: 'build docker container'
   - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+  displayName: 'retag docker container'
 
 - job: Login
   pool:
@@ -21,6 +23,7 @@ jobs:
     imageName: Build.SourceVersion
   steps:
   - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+  displayName: 'authentication'
   dependsOn: Build
   condition: succeeded()
 
@@ -31,7 +34,8 @@ jobs:
     buildConfiguration: 'Release'
     imageName: Build.SourceVersion
   steps:
-  - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+  - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+  displayName: 'Push built docker image into container registry'
   dependsOn: Login 
   condition: succeeded()
 
