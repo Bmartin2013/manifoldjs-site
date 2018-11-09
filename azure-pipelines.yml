@@ -9,14 +9,17 @@ variables:
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
 steps:
+# - bash: |
+#    # Write your commands here
+#    # Use the environment variables input below to pass secret variables to this script
+#    docker build -t manifoldsite . 
+#    docker tag manifoldsite $(dockerId).azurecr.io/manifoldsite:$(Build.SourceVersion) 
+# - bash: |
+#    docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+#    docker push $(dockerId).azurecr.io/manifoldsite:$(Build.SourceVersion) 
 - bash: |
-   # Write your commands here
-   # Use the environment variables input below to pass secret variables to this script
-   docker build -t manifoldsite . # include other options to meet your needs
-   docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-- bash: |
-   docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-   docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
+   docker pull $(dockerId).azurecr.io/latest:e487f896b6b8fe9e744ec9ea468c7c853b3145e2 #manifoldsite:$(Build.SourceVersion) 
+   docker run $(dockerId).azurecr.io/latest:e487f896b6b8fe9e744ec9ea468c7c853b3145e2 #manifoldsite:$(Build.SourceVersion) 
 
 # steps:
 # - script: |
