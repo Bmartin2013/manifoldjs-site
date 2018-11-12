@@ -7,6 +7,7 @@ jobs:
   - task: Docker@1
     displayName: 'Build an image'
     inputs:
+      dockerFile: 'dockerfile'
       inlineScript: |
         #!/bin/bash
         docker build -t manifoldsite . 
