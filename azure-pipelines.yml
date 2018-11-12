@@ -1,5 +1,5 @@
 jobs:
-- job: Build and push a new docker image to ACR
+- job: Build
   displayName: 'Build and Push'
   pool:
     vmImage: 'Ubuntu 16.04'
