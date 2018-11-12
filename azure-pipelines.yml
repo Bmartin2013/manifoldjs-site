@@ -13,11 +13,11 @@ jobs:
         docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
 
   - task: Docker@1
-      displayName: 'Register to ACR'
-      inputs:
-        inlineScript: |
-          #!/bin/bash
-          docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+    displayName: 'Register to ACR'
+    inputs:
+      inlineScript: |
+        #!/bin/bash
+        docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
 
   - task: Docker@1
     displayName: 'Push an image'
