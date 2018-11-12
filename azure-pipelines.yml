@@ -1,27 +1,41 @@
 jobs:
 - job: Build
-  displayName: 'Build and Push'
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - task: Docker@1
-    displayName: 'Build an image'
-    inputs:
-      dockerFile: 'dockerfile'
-      bash: |
-        docker build -t manifoldsite . 
-        docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+  - bash: docker build -t manifoldsite . 
+    name: Build_docker_image
+  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+    name: Retag_docker_image
+  - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+    name: Authenticate_ACR
+  - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+    name: Push_docker_image 
 
-  - task: Docker@1
-    displayName: 'Register to ACR'
-    inputs:
-      dockerFile: 'dockerfile'
-      bash: |
-        docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+# jobs:
+# - job: Build
+#   displayName: 'Build and Push'
+#   pool:
+#     vmImage: 'Ubuntu 16.04'
+#   steps:
+#   - task: Docker@1
+#     displayName: 'Build an image'
+#     inputs:
+#       dockerFile: 'dockerfile'
+#       bash: |
+#         docker build -t manifoldsite . 
+#         docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
 
-  - task: Docker@1
-    displayName: 'Push an image'
-    inputs:
-      dockerFile: 'dockerfile'
-      bash: |
-         docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+#   - task: Docker@1
+#     displayName: 'Register to ACR'
+#     inputs:
+#       dockerFile: 'dockerfile'
+#       bash: |
+#         docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+
+#   - task: Docker@1
+#     displayName: 'Push an image'
+#     inputs:
+#       dockerFile: 'dockerfile'
+#       bash: |
+#          docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
