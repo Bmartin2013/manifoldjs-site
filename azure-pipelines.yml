@@ -8,8 +8,7 @@ jobs:
     displayName: 'Build an image'
     inputs:
       dockerFile: 'dockerfile'
-      inlineScript: |
-        #!/bin/bash
+      bash: |
         docker build -t manifoldsite . 
         docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
 
@@ -17,14 +16,12 @@ jobs:
     displayName: 'Register to ACR'
     inputs:
       dockerFile: 'dockerfile'
-      inlineScript: |
-        #!/bin/bash
+      bash: |
         docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
 
   - task: Docker@1
     displayName: 'Push an image'
     inputs:
       dockerFile: 'dockerfile'
-      inlineScript: |
-        #!/bin/bash
+      bash: |
          docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
