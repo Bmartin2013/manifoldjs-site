@@ -10,10 +10,18 @@ jobs:
       inlineScript: |
         #!/bin/bash
         docker build -t manifoldsite . 
-       # name: Build_docker_image
-      # - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
-      #   name: Retag_docker_image
-    # - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-    #   name: Authenticate_ACR
-    # - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
-    #   name: Push_docker_image 
+        docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+
+  - task: Docker@1
+      displayName: 'Register to ACR'
+      inputs:
+        inlineScript: |
+          #!/bin/bash
+          docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+
+  - task: Docker@1
+    displayName: 'Push an image'
+    inputs:
+      inlineScript: |
+        #!/bin/bash
+         docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
