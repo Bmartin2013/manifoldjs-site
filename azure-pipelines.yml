@@ -6,6 +6,7 @@ jobs:
   steps:
   - task: Docker@1
   displayName: 'Build an image'
+  inputs:
     - bash: docker build -t manifoldsite . 
       name: Build_docker_image
     - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
