@@ -16,6 +16,7 @@ jobs:
   - task: Docker@1
     displayName: 'Register to ACR'
     inputs:
+      dockerFile: 'dockerfile'
       inlineScript: |
         #!/bin/bash
         docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
@@ -23,6 +24,7 @@ jobs:
   - task: Docker@1
     displayName: 'Push an image'
     inputs:
+      dockerFile: 'dockerfile'
       inlineScript: |
         #!/bin/bash
          docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
