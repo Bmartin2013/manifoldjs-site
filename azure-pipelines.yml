@@ -8,6 +8,6 @@ jobs:
   - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
     displayName: 'Re-tag docker image'
   - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-    name: 'Authenticate ACR'
+    displayName: 'Authenticate ACR'
   - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
-    name: 'Push docker image' 
+    displayName: 'Push docker image' 
