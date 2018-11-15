@@ -1,33 +1,13 @@
-# Build NodeJS Express app using Azure Pipelines
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript?view=vsts
-pool:
-  vmImage: 'Ubuntu 16.04'
-  
-variables:
-  buildConfiguration: 'Release'
-  imageName: Build.SourceVersion
-  # define two more variables dockerId and dockerPassword in the build pipeline in UI
-
-steps:
-- bash: |
-   # Write your commands here
-   # Use the environment variables input below to pass secret variables to this script
-   docker build -t manifoldsite . # include other options to meet your needs
-   docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-- bash: |
-   docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-   docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion) 
-
-# steps:
-# - script: |
-#     docker build --tag 'pepe' . #$(dockerId).azurecr.io/$(imageName) .
-#     docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
-#     #docker push $(dockerId).azurecr.io/$(imageName)
-
-
-
-
-- task: PublishTestResults@2
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+jobs:
+- job: Build
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - bash: docker build --target $(targetName) -t manifoldsite . 
+    displayName: 'Build docker image'
+  - bash: docker tag manifoldsite $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+    displayName: 'Re-tag docker image'
+  - bash: docker login -u $(dockerId) -p $(dockerPassword) $(dockerid).azurecr.io
+    displayName: 'Authenticate ACR'
+  - bash: docker push $(dockerId).azurecr.io/latest:$(Build.SourceVersion)
+    displayName: 'Push docker image' 
